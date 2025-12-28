@@ -1,0 +1,6 @@
+services:
+  cash-tracker:
+    build: .
+    ports:
+      - "8090:80"
+    restart: always
