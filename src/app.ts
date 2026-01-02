@@ -1,4 +1,4 @@
-import { addTransaction, getAllTransactions, Transaction } from './db';
+import { addTransaction, getAllTransactions, clearAllTransactions, Transaction } from './db';
 import { exportData } from './csv_export';
 // import '../style.css'; // Removed, using link tag
 
@@ -19,6 +19,7 @@ const form = document.getElementById('transaction-form') as HTMLFormElement;
 const dateInput = document.getElementById('date') as HTMLInputElement;
 const listContainer = document.getElementById('transaction-list') as HTMLDivElement;
 const exportBtn = document.getElementById('export-btn') as HTMLButtonElement;
+const deleteBtn = document.getElementById('delete-btn') as HTMLButtonElement;
 
 // Set default date to today (Local Time)
 if (dateInput) {
@@ -119,6 +120,23 @@ if (form) {
 if (exportBtn) {
     exportBtn.addEventListener('click', () => {
         exportData();
+    });
+}
+
+// Handle Delete All
+if (deleteBtn) {
+    deleteBtn.addEventListener('click', async () => {
+        const confirmed = confirm('Are you sure you want to delete ALL transactions? This action cannot be undone.');
+        if (confirmed) {
+            try {
+                await clearAllTransactions();
+                renderTransactions();
+                alert('All transactions deleted.');
+            } catch (error) {
+                console.error('Error clearing data', error);
+                alert('Failed to delete data');
+            }
+        }
     });
 }
 
